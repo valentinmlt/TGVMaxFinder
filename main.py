@@ -1,15 +1,13 @@
 import time
 
-import datetime
-from TgvFinder import tools
+from TgvFinder import tools, settings
 from TgvFinder.travel import Travel
 
+print(f"{'-' * 43} STARTING {'-' * 43}")
 
-print('-'*43 + 'STARTING' + '-'*43)
+# Configuration and generation of Travel class
 
-#configuration
-
-base_url = """https://data.sncf.com/api/v2/catalog/datasets/tgvmax/exports/json"""
+sleeping_time = settings.SLEEPING_TIME
 
 
 origine = 'PARIS (intramuros)'
@@ -18,41 +16,33 @@ days_go = ['2022-11-13', '2022-11-14', '2022-11-15', '2022-11-16', '2022-11-17',
 days_back = ['2022-11-13', '2022-11-14', '2022-11-15', '2022-11-16', '2022-11-17', '2022-11-18', '2022-11-19', '2022-11-20', '2022-11-21', '2022-11-22', '2022-11-23', '2022-11-24', '2022-11-25', '2022-11-26', '2022-11-27', '2022-11-28', '2022-11-29', '2022-11-30',]
 
 
-# initialisation
-
-try:
-
-    travels_list = [Travel(origine, destination, days_go), Travel(destination, origine, days_back)]
-    for travel in travels_list:
-        travel.verify(notify=False)
-        time.sleep(1)
+travels_list = [Travel(origine, destination, days_go),
+                Travel(destination, origine, days_back),]
 
 
-    tools.notify('Initialisation complete', 'STARTING')
+# Initialisation of the travel class, not sending notification for the new data to no overload notification
 
-except Exception as e:
-    print(e)
-    quit()
+for travel in travels_list:
+    travel.verify(notify=False)
+    time.sleep(1)
 
-# Veille
 
-time.sleep(60)
+tools.notify('Initialisation complete', 'STARTING')
+
+# End of initialisation
+
+# Starting the watching processus
+
+time.sleep(sleeping_time)
 
 while True:
     for travel in travels_list:
-        try:
-            travel.verify(notify=True)
-            time.sleep(1)
 
-        except Exception as e:
-            print(e)
-            time.sleep(120)
-            tools.notify(str(e), 'ERROR')
-            quit()
+        travel.verify(notify=True)
+        time.sleep(1)
 
-    print('-' * 43 + 'SLEEPING '+ str(datetime.datetime.now()) + '-' * 43)
-
-    time.sleep(60)
+    print(f"{'-' * 43} SLEEPING ({sleeping_time}) : {time.strftime('%d %b %Y %H:%M:%S', time.localtime())} {'-' * 43}")
+    time.sleep(sleeping_time)
 
 
 
