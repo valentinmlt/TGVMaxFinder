@@ -27,11 +27,15 @@ try:
         time.sleep(1)
 
 
+    tools.notify('Initialisation complete', 'STARTING')
+
 except Exception as e:
     print(e)
     quit()
 
 # Veille
+
+time.sleep(60)
 
 while True:
     for travel in travels_list:
