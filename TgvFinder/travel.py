@@ -25,6 +25,8 @@ class Travel:
         r = requests.get(self.url_query)
         if r.status_code == 200:
             data = r.json()
+            print(self.url_query)
+            print(f'{self.origine} --> {self.destination} : received {len(data)} trains')
 
             self.verify_if_still_available(data, notify=notify)
 
@@ -32,7 +34,7 @@ class Travel:
                 if not self.isKnown(train):
 
                     self.already_processed_train.append(train)
-                    print(f"Not knew adding to {len(self.already_processed_train)} list")
+                    print(f"{train['origine']} --> {train['destination']} : {train['date']}|{train['heure_depart']} NOW AVAILABLE ({len(self.already_processed_train)})")
 
                     if notify:
 
@@ -47,6 +49,7 @@ class Travel:
 
         for train in a:
             self.already_processed_train.remove(train)
+            print(f"{train['origine']} --> {train['destination']} : {train['date']}{train['heure_depart']} No longer Available ({len(self.already_processed_train)})")
             print('Train no longer available removing ')
             if notify:
                 text = f"{train['origine']} --> {train['destination']} : {train['date']}{train['heure_depart']} No longer Available"

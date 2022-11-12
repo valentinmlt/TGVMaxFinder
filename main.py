@@ -1,10 +1,11 @@
 import time
 
-import requests
-
+import datetime
 from TgvFinder import tools
 from TgvFinder.travel import Travel
 
+
+print('-'*43 + 'STARTING' + '-'*43)
 
 #configuration
 
@@ -48,6 +49,8 @@ while True:
             time.sleep(120)
             tools.notify(str(e), 'ERROR')
             quit()
+
+    print('-' * 43 + 'SLEEPING '+ str(datetime.datetime.now()) + '-' * 43)
 
     time.sleep(60)
 
