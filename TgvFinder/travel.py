@@ -42,15 +42,21 @@ class Travel:
 
                 print(f'{self.origine} --> {self.destination} : received {len(new_data)} trains')
 
+                if new_trains:
+                    new_notifcation_text = f"{self.origine} --> {self.destination} : {len(new_trains)} nouveau(x) train(s)"
+                    tools.notify(new_notifcation_text, 'NEW TRAIN', notify=notify)
+
+                if deleted_trains:
+                    del_notifcation_text = f"{self.origine} --> {self.destination} : {len(deleted_trains)} train(s) supprimé(s)"
+                    tools.notify(del_notifcation_text, 'NEW TRAIN', notify=notify)
+
                 for train in new_trains:
                     notifcation_text = f"{train['origine']} --> {train['destination']} : {train['date']}|{train['heure_depart']} NOW AVAILABLE"
                     print(notifcation_text)
-                    tools.notify(notifcation_text, 'NEW TRAIN', notify=notify)
 
                 for train in deleted_trains:
                     notifcation_text = f"{train['origine']} --> {train['destination']} : {train['date']}|{train['heure_depart']} No longer Available "
                     print(notifcation_text)
-                    tools.notify(notifcation_text, 'DELETED TRAIN', notify=notify)
 
         except Exception as error:
 

@@ -10,14 +10,24 @@ print(f"{'-' * 43} STARTING {'-' * 43}")
 sleeping_time = settings.SLEEPING_TIME
 
 
-origine = 'PARIS (intramuros)'
-destination = 'BORDEAUX ST JEAN'
-days_go = ['2022-11-13', '2022-11-14', '2022-11-15', '2022-11-16', '2022-11-17', '2022-11-18', '2022-11-19', '2022-11-20', '2022-11-21', '2022-11-22', '2022-11-23', '2022-11-24', '2022-11-25', '2022-11-26', '2022-11-27', '2022-11-28', '2022-11-29', '2022-11-30']
-days_back = ['2022-11-13', '2022-11-14', '2022-11-15', '2022-11-16', '2022-11-17', '2022-11-18', '2022-11-19', '2022-11-20', '2022-11-21', '2022-11-22', '2022-11-23', '2022-11-24', '2022-11-25', '2022-11-26', '2022-11-27', '2022-11-28', '2022-11-29', '2022-11-30',]
+paris = 'PARIS (intramuros)'
+bordeaux = 'BORDEAUX ST JEAN'
+le_mans = 'LE MANS'
+massy = 'MASSY TGV'
+nov_days = tools.all_day_from_month(11, 2022)
+dec_days = tools.all_day_from_month(12, 2022)
+all_days = nov_days + dec_days
 
 
-travels_list = [Travel(origine, destination, days_go),
-                Travel(destination, origine, days_back),]
+travels_list = [Travel(paris, bordeaux, all_days),
+                Travel(bordeaux, paris, all_days),
+                Travel(paris, le_mans, all_days),
+                Travel(le_mans, paris, all_days),
+                Travel(massy, bordeaux, all_days),
+                Travel(bordeaux, massy, all_days),
+                Travel(massy, le_mans, all_days),
+                Travel(le_mans, massy, all_days),
+                ]
 
 
 # Initialisation of the travel class, not sending notification for the new data to no overload notification

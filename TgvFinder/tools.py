@@ -1,5 +1,8 @@
+import calendar
+
 import requests
 import re
+
 
 from . import settings
 
@@ -115,15 +118,29 @@ def notify(text: str, title: str, notify=True, group='default'):
         alertzy_id = settings.ALERTZY_ID
 
         data = {
-            'accountKey': (None, alertzy_id),
-            'title': (None, title),
-            'message': (None, text),
-            'group': (None, group),
-            'buttons': (None, '[{"text":"Google", "link":"http://google.com","color":"success"}]'),
+            'accountKey': alertzy_id,
+            'title': title,
+            'message': text,
         }
 
         response = requests.post('https://alertzy.app/send', data=data)
         print(f'Notification sended : {response.content}')
+
+
+def all_day_from_month(MM: int, YYYY: int, ):
+    """
+    Give all the date of a month in the right format YYYY-MM-DD
+    :param MM:
+    :param YYYY:
+    :return: list
+    """
+    assert isinstance(MM, int), 'MM must be an int'
+    assert isinstance(YYYY, int), 'YYYY must be an int'
+    assert 0 < MM <= 12, 'MM Must be between 1 and 12'
+
+    num_days = calendar.monthrange(YYYY, MM)[1]
+    return [f"{YYYY}-{str(MM).zfill(2)}-{str(DD).zfill(2)}" for DD in range(1, num_days + 1)]
+
 
 
 
