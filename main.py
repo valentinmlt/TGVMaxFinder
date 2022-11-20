@@ -37,7 +37,7 @@ for travel in travels_list:
     time.sleep(1)
 
 
-tools.notify('Initialisation complete', 'STARTING')
+tools.notify('Initialisation complete ( sleeping time : 50', 'STARTING')
 
 # End of initialisation
 
