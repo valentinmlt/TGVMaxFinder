@@ -104,14 +104,12 @@ def verifyDateFormat(days_list: list):
     return True
 
 
-def notify(text: str, title: str, notify=True, group='default'):
+def notify(text: str, title: str):
     """
     Use alertzy API to inform the user from news
 
     :param text:
     :param title:
-    :param group:
-    :param notify: Boolean
     :return: None
     """
     if notify:

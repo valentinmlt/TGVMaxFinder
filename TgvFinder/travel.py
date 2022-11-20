@@ -42,13 +42,13 @@ class Travel:
 
                 print(f'{self.origine} --> {self.destination} : received {len(new_data)} trains')
 
-                if new_trains:
+                if new_trains and notify:
                     new_notifcation_text = f"{self.origine} --> {self.destination} : {len(new_trains)} nouveau(x) train(s)"
-                    tools.notify(new_notifcation_text, 'NEW TRAIN', notify=notify)
+                    tools.notify(new_notifcation_text, 'NEW TRAIN(s)')
 
-                if deleted_trains:
+                if deleted_trains and notify:
                     del_notifcation_text = f"{self.origine} --> {self.destination} : {len(deleted_trains)} train(s) supprimé(s)"
-                    tools.notify(del_notifcation_text, 'NEW TRAIN', notify=notify)
+                    tools.notify(del_notifcation_text, 'DELETED TRAIN(s)')
 
                 for train in new_trains:
                     notifcation_text = f"{train['origine']} --> {train['destination']} : {train['date']}|{train['heure_depart']} NOW AVAILABLE"
@@ -58,10 +58,14 @@ class Travel:
                     notifcation_text = f"{train['origine']} --> {train['destination']} : {train['date']}|{train['heure_depart']} No longer Available "
                     print(notifcation_text)
 
+            else:
+                print(f"{'-' * 43} {self.origine} --> {self.destination} : NOT 200 ( sleep for 20' ) {request.text} {'-' * 43}")
+                time.sleep(1200)
+
         except Exception as error:
 
-            print(f"{'-'*43} ERROR (sleeping 120 seconds) : {str(error)} {'-'*43}")
-            time.sleep(120)
+            print(f"{'-'*43} {self.origine} --> {self.destination} : ERROR (sleeping 20' seconds) : {str(error)} {'-'*43}")
+            time.sleep(1200)
 
     def filter_by_date(self, all_dataset: list):
         """
