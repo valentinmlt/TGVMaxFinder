@@ -1,3 +1,4 @@
+from datetime import datetime
 import time
 
 import requests
@@ -73,7 +74,17 @@ class Travel:
         :param all_dataset:
         :return: a list of filtered data
         """
+
+        self.delete_past_days()
+
         return [train for train in all_dataset if train['date'] in self.days]
+
+    def delete_past_days(self):
+        assert isinstance(self.days, list), 'days must be a list '
+
+        patern = '%Y-%m-%d'
+
+        self.days = [date for date in self.days if datetime.strptime(date, patern).date() >= datetime.today().date()]
 
 
 
