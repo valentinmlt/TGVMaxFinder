@@ -1,4 +1,5 @@
 import calendar
+import datetime
 
 import requests
 import re
@@ -101,6 +102,24 @@ def verifyDateFormat(days_list: list):
         if not (len(date) == 10 and re.match('20\d\d-[0-1]\d-[0-3]\d', date)):
             return False
 
+    return True
+
+
+def verifyHourFormat(hours_list: list, timeformat: str):
+    """
+    Verify the compatibility of list a date with the API
+    Format = "%H:%M"
+
+    :param hour:
+    :return: Boolean
+    """
+    assert isinstance(hours_list, list), 'days_list must be a list'
+    for hour in hours_list:
+        try:
+            datetime.datetime.strptime(hour, timeformat)
+        except ValueError as e:
+            print('ValueError Raised:', e)
+            return False
     return True
 
 
