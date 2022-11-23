@@ -8,17 +8,22 @@ from TgvFinder import tools
 
 class Travel:
 
-    def __init__(self, origine: str, destination: str, days: list):
+    def __init__(self, origine: str, destination: str, days: list, hour: list = None):
         assert isinstance(origine, str), 'origine must be a string'
         assert isinstance(destination, str), 'destination must be a string'
         assert isinstance(days, list), 'go_days must be a list'
+        if (hour):
+            assert isinstance(hour, list), 'hour must be a list'
 
         self.origine = origine
         self.destination = destination
         self.days = days
+        self.hour = hour
 
         assert tools.verify_stations(origine, destination), 'Verify station names'
         assert tools.verifyDateFormat(days), "Verify date format"
+        if (hour):
+            assert tools.verifyHourFormat(hour, "%H:%M"), "Verify hour format"
 
         self.url_query = tools.makeSimpleQuery(origine, destination)
         self.previous_data = []
@@ -38,7 +43,10 @@ class Travel:
                 all_dataset = request.json()
 
                 new_data = self.filter_by_date(all_dataset)
-                new_trains, deleted_trains = tools.compare_list_of_dict(self.previous_data, new_data)
+                if (self.hour):
+                    new_data = self.filter_by_hour(new_data)
+                new_trains, deleted_trains = tools.compare_list_of_dict(
+                    self.previous_data, new_data)
                 self.previous_data = new_data
 
                 print(f'{self.origine} --> {self.destination} : received {len(new_data)} trains')
@@ -78,6 +86,16 @@ class Travel:
         self.delete_past_days()
 
         return [train for train in all_dataset if train['date'] in self.days]
+
+    def filter_by_hour(self, all_dataset: list):
+        """
+        Method to filter the dataset from API to keep the interesting trains
+        :param all_dataset:
+        :return: a list of filtered data
+        """
+
+        return [
+            train for train in all_dataset if train['heure_depart'] in self.hour]
 
     def delete_past_days(self):
         assert isinstance(self.days, list), 'days must be a list '

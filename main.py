@@ -19,7 +19,7 @@ dec_days = tools.all_day_from_month(12, 2022)
 all_days = nov_days + dec_days
 
 
-travels_list = [Travel(paris, bordeaux, all_days),
+travels_list = [Travel(paris, bordeaux, all_days, ["20:39", "16:06"]),
                 Travel(bordeaux, paris, all_days),
                 Travel(paris, le_mans, all_days),
                 Travel(le_mans, paris, all_days),
